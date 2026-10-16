@@ -1,0 +1,17 @@
+name = "impactcup"
+main = "src/worker.js"
+compatibility_date = "2024-08-01"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "impactcup"
+database_id = "00000000-0000-0000-0000-000000000001"
+migrations_dir = "migrations"
+
+[vars]
+TOURNAMENT_ID = "impact-cup-2026"

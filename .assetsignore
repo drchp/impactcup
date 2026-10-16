@@ -1,0 +1,11 @@
+wrangler.toml
+src/**
+migrations/**
+node_modules/**
+package.json
+package-lock.json
+test/**
+.git/**
+.cursor/**
+internal/**
+docs/**
