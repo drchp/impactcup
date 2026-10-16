@@ -1,1 +1,1038 @@
-PLACEHOLDER50K
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17241d">
+<title>Impact Cup 2026</title>
+<style>
+:root{
+  --bg:#f3efe5; --paper:#fffdf8; --ink:#17241d; --muted:#6f746f;
+  --green:#263c31; --green2:#405c4b; --gold:#a88651; --line:#d8cfbf;
+  --red:#7c4538; --shadow:none;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,select,input{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1180px;margin:auto;padding:18px 14px 70px}
+.hero{background:var(--green);color:#fff;border-radius:18px;padding:22px 22px 18px;box-shadow:var(--shadow)}
+.heroTop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.kicker{letter-spacing:.18em;text-transform:uppercase;font-size:12px;color:#d8c49d;font-weight:800}
+h1{font-family:Georgia,serif;font-size:42px;font-weight:500;margin:5px 0 2px}
+.sub{color:#dbe4df;font-size:14px}
+.scoreHero{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;min-width:300px}
+.teamScore{text-align:center}
+.teamScore .name{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#d8c49d}
+.teamScore .num{font-family:Georgia,serif;font-size:48px;line-height:1}
+.dash{font-size:28px;color:#95a79c}
+.status{margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.18);display:flex;justify-content:space-between;gap:10px 18px;flex-wrap:wrap;font-size:14px}
+.status strong{color:#fff}
+.status span{color:#dbe4df}
+#syncStatus{font-size:12px}
+.syncOk{color:#b8e0c8!important}
+.syncWarn{color:#f0d9a8!important}
+.syncErr{color:#f0b8b0!important}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.btn{border:1px solid var(--green);background:var(--green);color:#fff;padding:10px 13px;border-radius:9px}
+.btn.secondary{background:var(--paper);color:var(--green)}
+.btn.danger{background:transparent;color:var(--red);border-color:#b9948a}
+.section{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-top:10px;box-shadow:var(--shadow);overflow:hidden}
+.sectionHead{padding:15px 16px 11px;display:flex;justify-content:space-between;gap:12px;align-items:flex-end;border-bottom:1px solid #ebe4d8}
+.sectionHead h2{font-family:Georgia,serif;font-weight:500;margin:0;font-size:25px}
+.meta{color:var(--muted);font-size:13px}
+.pointsBadge{background:#eee5d5;color:#71582f;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;white-space:nowrap}
+.sectionBody{padding:12px 16px 16px}
+.summaryRow{display:none}
+.mini{border:1px solid var(--line);border-radius:9px;padding:8px 9px;background:#fcfaf4}
+.mini .lab{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.mini .val{font-family:Georgia,serif;font-size:22px;margin-top:2px}
+.matchGrid{display:grid;gap:10px}
+.matchCard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff;box-shadow:none}
+.matchTop{display:grid;grid-template-columns:40px minmax(0,1fr) 34px minmax(0,1fr);gap:12px;align-items:end}
+.no{font-family:Georgia,serif;font-size:21px;color:var(--green);align-self:center}
+.vs{text-align:center;font-weight:800;color:var(--muted);font-size:11px;align-self:center}
+.teamPicker{min-width:0}
+.teamPickerLabel{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 6px 2px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;min-width:0}
+.singleSelect{min-width:0}
+select,input[type=number]{width:100%;min-width:0;min-height:42px;border:1px solid #cfc7ba;border-radius:8px;background:#fff;color:var(--ink);padding:8px 30px 8px 10px;font-size:14px}
+.matchFooter{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:10px;padding-top:10px;border-top:1px solid #eee8de}
+.calc{flex:1;min-width:0;color:#455048;font-size:12px;line-height:1.4;background:transparent;padding:0;margin:0}
+.resultBtns{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.resultBtn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:7px 9px;font-size:12px}
+.resultBtn.active{background:var(--green);color:#fff;border-color:var(--green)}
+.finalHole{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee7dc}
+.finalHole:last-child{border-bottom:0}
+.rosters{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.roster{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.roster h3{margin:0;padding:12px 14px;background:#f4efe5;font-family:Georgia,serif;font-weight:500}
+.player{display:grid;grid-template-columns:1fr 85px;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid #eee7dc}
+.player:first-of-type{border-top:0}
+.player small{display:block;color:var(--muted);margin-top:2px}
+.footerNote{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.5}
+@media(max-width:800px){
+  .heroTop{grid-template-columns:1fr}
+  .scoreHero{min-width:0;width:100%}
+  .summaryRow{grid-template-columns:1fr 1fr}
+  .matchTop{grid-template-columns:32px 1fr}
+  .matchTop>.vs{display:none}
+  .teamPicker,.singleSelect{grid-column:2}
+  .matchFooter{align-items:flex-start;flex-direction:column}
+  .resultBtns{justify-content:flex-start}
+  .rosters{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  h1{font-size:34px}
+  .teamScore .num{font-size:40px}
+  .pair{grid-template-columns:1fr}
+  .matchCard{padding:13px 14px}
+}
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .toolbar{display:none}
+  .section,.hero{box-shadow:none}
+  .resultBtns{display:none}
+}
+
+/* Presentation mode */
+.viewSwitch{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;max-width:1180px;margin:10px auto;padding:0 14px}
+.viewSwitch button{border:1px solid var(--green);background:var(--paper);color:var(--green);padding:9px 13px;border-radius:9px;font-weight:700}
+.viewSwitch button.active{background:var(--green);color:#fff}
+#presentationView{display:none}
+body.presentation-mode #adminView{display:none}
+body.presentation-mode #presentationView{display:block}
+body.presentation-mode .viewSwitch{max-width:1180px;margin:10px auto;padding:0 14px}
+.presentHero{background:linear-gradient(145deg,#1f352a,#17251e);color:#fff;border-radius:18px;padding:26px 28px;box-shadow:var(--shadow);margin-top:10px}
+.presentTop{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.presentTitle .kicker{color:#d9c394}
+.presentTitle h1{margin:4px 0 0;font-size:46px}
+.presentScore{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;min-width:330px}
+.presentScore .num{font-family:Georgia,serif;font-size:54px;line-height:1}
+.presentScore .label{text-transform:uppercase;letter-spacing:.12em;color:#d9c394;font-size:12px}
+.presentScore .team{text-align:center}
+.presentStatus{margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.18);font-size:15px;color:#e6ede9;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.presentSection{background:var(--paper);border:1px solid var(--line);border-radius:15px;margin-top:12px;overflow:hidden;box-shadow:var(--shadow)}
+.presentSectionHead{padding:15px 18px;background:#f0eadf;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.presentSectionHead h2{font-family:Georgia,serif;font-size:27px;font-weight:500;margin:0}
+.presentMatches{display:grid;gap:1px;background:var(--line)}
+.presentMatch{background:#fff;padding:15px 18px;display:grid;grid-template-columns:90px minmax(0,1fr) 55px minmax(0,1fr) 130px;align-items:center;gap:14px}
+.presentTee{font-size:13px;color:var(--muted);font-weight:800;letter-spacing:.05em}
+.presentPair{font-family:Georgia,serif;font-size:20px;line-height:1.25}
+.presentPair small{display:block;font-family:Inter,system-ui,sans-serif;font-size:12px;color:var(--muted);margin-top:4px}
+.presentVs{text-align:center;font-size:11px;font-weight:900;letter-spacing:.12em;color:var(--gold)}
+.presentResult{text-align:right}
+.presentResult .scoretag{display:inline-block;background:var(--green);color:#fff;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.presentResult .pending{color:var(--muted);font-size:12px}
+.presentHandicap{grid-column:2/5;margin-top:-6px;padding-top:7px;border-top:1px solid #eee7dc;font-size:12px;color:var(--muted);line-height:1.45}
+.presentHandicap strong{color:var(--green)}
+.presentHandicap .side{display:inline-block;margin-right:16px}
+.presentEmpty{color:#9a9f9b;font-style:italic}
+.presentFooter{margin-top:12px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:850px){
+  .presentMatch{grid-template-columns:70px 1fr 32px 1fr}
+  .presentResult{grid-column:2/5;text-align:left}
+}
+@media(max-width:560px){
+  .presentScore{min-width:0;width:100%}
+  .presentMatch{grid-template-columns:58px 1fr}
+  .presentVs{display:none}
+  .presentPair,.presentResult,.presentHandicap{grid-column:2}
+  .presentPair{font-size:18px}
+}
+
+
+.optimizerBox{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:#faf7f0;padding:10px 12px}
+.optimizerHead{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.optimizerHead strong{font-family:Georgia,serif;font-size:18px;font-weight:500}
+.optimizerGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.optimizerSlot{border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px}
+.optimizerTime{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.05em}
+.optimizerMatch{font-size:12px;margin-top:3px}
+.optimizerNote{margin-top:8px;font-size:11px;color:var(--muted);line-height:1.4}
+.optimizerWarn{margin-top:7px;font-size:11px;font-weight:700}
+.optimizerGood{color:#3d624b}
+.optimizerCaution{color:#9a6b23}
+.optimizerBad{color:#8c463a}
+@media(max-width:800px){
+ .optimizerGrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+ .optimizerGrid{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div class="viewSwitch">
+  <button id="adminModeBtn" class="active" type="button">Admin / Scoring</button>
+  <button id="presentationModeBtn" type="button">Presentation Mode</button>
+</div>
+
+<div id="adminView">
+
+<div class="wrap">
+  <section class="hero">
+    <div class="heroTop">
+      <div>
+        <div class="kicker">The Cliffs at Glassy · October 16, 2026</div>
+        <h1>Impact Cup</h1>
+        <div class="sub">Captain selections · handicap engine · tournament command center</div>
+      </div>
+      <div class="scoreHero">
+        <div class="teamScore"><div class="name">MacDonald</div><div class="num" id="macTotal">0</div></div>
+        <div class="dash">—</div>
+        <div class="teamScore"><div class="name">Walker</div><div class="num" id="walTotal">0</div></div>
+      </div>
+    </div>
+    <div class="status">
+      <span id="leadText"><strong>24 points available.</strong> Team MacDonald retains at 12; Team Walker needs 12.5 to win.</span>
+      <span id="remainingText">24 points remaining</span>
+      <span id="syncStatus">Sync: connecting…</span>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <button class="btn secondary" id="pinBtn" type="button">Scorer PIN</button>
+    <button class="btn" id="saveBtn">Save on this device</button>
+    <button class="btn secondary" id="printBtn">Print / PDF</button>
+    <button class="btn secondary" id="shareBtn">Copy share snapshot</button>
+    <button class="btn danger" id="resetBtn">Reset tournament</button>
+  </div>
+
+  <section class="section">
+    <div class="sectionHead">
+      <div><h2>Match 1 · Captain's Choice</h2><div class="meta">Holes 1–9 · any two teammates · 5 matches · 1 point each</div></div>
+      <div class="pointsBadge">5 pts</div>
+    </div>
+    <div class="sectionBody">
+      <div class="summaryRow">
+        <div class="mini"><div class="lab">MacDonald</div><div class="val" id="m1mac">0</div></div>
+        <div class="mini"><div class="lab">Walker</div><div class="val" id="m1wal">0</div></div>
+        <div class="mini"><div class="lab">Played</div><div class="val" id="m1played">0 / 5</div></div>
+        <div class="mini"><div class="lab">Format</div><div class="val" style="font-size:16px">2v2 Scramble</div></div>
+      </div>
+      <div id="match1Grid" class="matchGrid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead">
+      <div><h2>Match 2 · Best Ball</h2><div class="meta">Holes 10–18 · Four-Ball Match Play · any two teammates · 5 matches · 1 point each</div></div>
+      <div class="pointsBadge">5 pts</div>
+    </div>
+    <div class="sectionBody">
+      <div class="summaryRow">
+        <div class="mini"><div class="lab">MacDonald</div><div class="val" id="m2mac">0</div></div>
+        <div class="mini"><div class="lab">Walker</div><div class="val" id="m2wal">0</div></div>
+        <div class="mini"><div class="lab">Played</div><div class="val" id="m2played">0 / 5</div></div>
+        <div class="mini"><div class="lab">Format</div><div class="val" style="font-size:16px">2v2 Best Ball</div></div>
+      </div>
+      <div id="match2Grid" class="matchGrid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead">
+      <div><h2>Re-Pairing Optimizer</h2><div class="meta">Captains choose every partner and opponent. The optimizer only recommends the Match 1 tee order.</div></div>
+      <div class="pointsBadge">Pace</div>
+    </div>
+    <div class="sectionBody">
+      <div class="optimizerBox">
+        <div class="optimizerHead">
+          <strong>Recommended Match 1 Tee Order</strong>
+          <button class="btn secondary" id="optimizeBtn" type="button">Optimize Tee Order</button>
+        </div>
+        <div id="optimizerGrid" class="optimizerGrid"></div>
+        <div id="optimizerSummary" class="optimizerNote">
+          Enter all Match 1 and Match 2 pairings, then optimize. No matchup changes — only the five Match 1 tee slots are reordered to keep the re-pairing moving.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead">
+      <div><h2>Match 3 · Singles</h2><div class="meta">Holes 1–6 · same-tier Singles · 10 matches · 1 point each</div></div>
+      <div class="pointsBadge">10 pts</div>
+    </div>
+    <div class="sectionBody">
+      <div class="summaryRow">
+        <div class="mini"><div class="lab">MacDonald</div><div class="val" id="m3mac">0</div></div>
+        <div class="mini"><div class="lab">Walker</div><div class="val" id="m3wal">0</div></div>
+        <div class="mini"><div class="lab">Played</div><div class="val" id="m3played">0 / 10</div></div>
+        <div class="mini"><div class="lab">Format</div><div class="val" style="font-size:16px">1v1 Match Play</div></div>
+      </div>
+      <div id="singlesGrid" class="matchGrid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead">
+      <div><h2>Finale</h2><div class="meta">Details announced on the course</div></div>
+      <div class="pointsBadge">Surprise</div>
+    </div>
+    <div class="sectionBody">
+      <div class="summaryRow">
+        <div class="mini"><div class="lab">MacDonald</div><div class="val" id="m4mac">0</div></div>
+        <div class="mini"><div class="lab">Walker</div><div class="val" id="m4wal">0</div></div>
+        <div class="mini"><div class="lab">Played</div><div class="val" id="m4played">0 / 3 holes</div></div>
+        <div class="mini"><div class="lab">Finale</div><div class="val" style="font-size:16px">Surprise</div></div>
+      </div>
+      <div id="finalCalc" class="calc" style="margin-bottom:8px"></div>
+      <div id="finalHoles"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead">
+      <div><h2>Players & Handicap Indexes</h2><div class="meta">Tee No. 2 · Front 35.8 / 137 · Back 35.8 / 149 · Par 36 each side</div></div>
+    </div>
+    <div class="sectionBody">
+      <div class="rosters">
+        <div class="roster"><h3>Team MacDonald</h3><div id="macRoster"></div></div>
+        <div class="roster"><h3>Team Walker</h3><div id="walRoster"></div></div>
+      </div>
+      <div class="footerNote">
+        Source-of-truth handicap rules: 9-hole Course Handicaps use USGA Rule 6.1b. Match 1 uses the USGA 2-player scramble allowance (35% low + 15% high) from unrounded Course Handicaps; for head-to-head match play, the unrounded team values are differenced and rounded once under the USGA no-double-rounding principle. Match 2 is Four-Ball Match Play at 90% from the lowest unrounded Course Handicap. Singles is 100% individual match play using the unrounded Course Handicap difference, rounded once. For the shortened 6-hole Singles segment, Impact Cup allocates the full Front-9 difference by the published stroke-index order and uses only strokes landing on Holes 1-6. The 10v10 Finale is scratch because USGA/WHS publishes no allowance for a 10-player alternate-shot side.
+      </div>
+    </div>
+  </section>
+</div>
+
+
+</div>
+
+<div id="presentationView">
+  <div class="wrap">
+    <section class="presentHero">
+      <div class="presentTop">
+        <div class="presentTitle">
+          <div class="kicker">The Cliffs at Glassy · October 16, 2026</div>
+          <h1>Impact Cup</h1>
+        </div>
+        <div class="presentScore">
+          <div class="team"><div class="label">Team MacDonald</div><div class="num" id="pMacTotal">0</div></div>
+          <div style="font-size:28px;color:#94a79c">—</div>
+          <div class="team"><div class="label">Team Walker</div><div class="num" id="pWalTotal">0</div></div>
+        </div>
+      </div>
+      <div class="presentStatus">
+        <span id="pLeadText">24 points available · MacDonald retains at 12 · Walker needs 12.5</span>
+        <span id="pRemainingText">24 points remaining</span>
+      </div>
+    </section>
+
+    <section class="presentSection">
+      <div class="presentSectionHead">
+        <div>
+          <h2>Match 1 · Captain's Choice</h2>
+          <div class="meta">Holes 1–9 · 5 points available</div>
+        </div>
+        <div class="pointsBadge">Matchups</div>
+      </div>
+      <div id="pMatch1" class="presentMatches"></div>
+    </section>
+
+    <section class="presentSection">
+      <div class="presentSectionHead">
+        <div>
+          <h2>Match 2 · Best Ball</h2>
+          <div class="meta">Holes 10–18 · 5 points available</div>
+        </div>
+        <div class="pointsBadge">Fresh Pairings</div>
+      </div>
+      <div id="pMatch2" class="presentMatches"></div>
+    </section>
+
+    <section class="presentSection">
+      <div class="presentSectionHead">
+        <div>
+          <h2>Match 3 · Singles</h2>
+          <div class="meta">Holes 1–6 · 10 points available</div>
+        </div>
+        <div class="pointsBadge">1v1</div>
+      </div>
+      <div id="pMatch3" class="presentMatches"></div>
+    </section>
+
+    <section class="presentSection">
+      <div class="presentSectionHead">
+        <div>
+          <h2>Finale</h2>
+          <div class="meta">Details announced on the course</div>
+        </div>
+        <div class="pointsBadge">Surprise</div>
+      </div>
+      <div id="pFinal" class="presentMatches"></div>
+    </section>
+
+    <div class="presentFooter">IMPACT CUP · BENEFITING CAMP IMPACT</div>
+  </div>
+</div>
+<script>
+const STORAGE="impactCup2026-live-v1";
+const teams={
+ mac:[
+  ["Joshua Delo",-1.7],["Haddon Wiginton",1.9],["Jim Wiginton",7.8],["Trey MacDonald",8.2],["Joshua Ratcliff",8.2],
+  ["Ronnie Bruce",13],["Steve Hall",16],["Alan Benson",16.4],["Jason Boehm",18],["Matt Howell",18]
+ ],
+ wal:[
+  ["David Culpepper",0],["Clay Wiginton",3.1],["Doug Walker",5.8],["Dustin Rogers",6],["Derek Rogers",7],
+  ["Brad Spink",9.8],["Jim Wetterlund",10],["Chip Wiginton",11],["Nathan Kaser",12],["Mike Koper",17]
+ ]
+};
+const HANDICAP_RULESET_VERSION="2026-10-15 USGA/WHS Source of Truth v1";
+const HANDICAP_RULES_URLS={
+ rule6_1b:"https://www.usga.org/content/usga/home-page/handicapping/roh/Content/rules/6%201b%209%20holes.htm",
+ rule6_2a:"https://www.usga.org/handicapping/roh/Content/rules/6%202a%20Standard%20Calculation.htm",
+ appendixC:"https://www.usga.org/content/dam/usga/pdf/Handicap-Allowances-detailed.pdf",
+ applyingAllowances:"https://www.usga.org/content/usga/home-page/handicapping/roh/Content/rules/Committee%20Content/USGA/LG_R7j.htm",
+ fourBall:"https://www.usga.org/content/usga/home-page/handicapping/roh/Content/rules/Committee%20Content/USGA/LG_R7g11.htm",
+ individualMatch:"https://www.usga.org/handicapping/roh/Content/rules/Committee%20Content/USGA/LG_R7g10.htm",
+ strokeIndex:"https://www.usga.org/handicapping/roh/Content/rules/Appendix%20E%20Stroke%20Index%20Allocation.htm"
+};
+const front={rating:35.8,slope:137,par:36};
+const back={rating:35.8,slope:149,par:36};
+const frontOrder=[6,7,2,4,9,3,1,5,8];
+const backOrder=[15,18,12,10,16,11,17,14,13];
+const singlesOrder=[6,2,4,3,1,5];
+const finalOrder=[7,9,8];
+
+let state={
+ hcp:{},
+ m1:Array.from({length:5},()=>({mac1:"",mac2:"",wal1:"",wal2:"",result:""})),
+ m2:Array.from({length:5},()=>({mac1:"",mac2:"",wal1:"",wal2:"",result:""})),
+ m3:Array.from({length:10},()=>({mac:"",wal:"",result:""})),
+ m4:["","",""],
+ teeOrder:[0,1,2,3,4]
+};
+for(const t of ["mac","wal"]) for(const [n,h] of teams[t]) state.hcp[n]=h;
+
+const $=q=>document.querySelector(q);
+const $$=q=>[...document.querySelectorAll(q)];
+const fmtH=x=>x<0?`+${Math.abs(x).toFixed(1)}`:Number(x).toFixed(1);
+const all=t=>teams[t].map(([name],idx)=>({name,idx,h:Number(state.hcp[name])}));
+const player=(t,n)=>all(t).find(p=>p.name===n);
+const half=p=>p.idx<5?"Top 5":"Bottom 5";
+const band=p=>p.idx<3?"A":p.idx<6?"B":"C";
+function roundTraditional(value, decimals=0){
+ const factor=10**decimals;
+ const scaled=Number(value)*factor;
+ // USGA calls for traditional rounding. For plus handicaps (stored as negative),
+ // an exact half must round away from zero: e.g. +1.7 / 2 = +0.85 -> +0.9.
+ return (scaled>=0 ? Math.floor(scaled+0.5+1e-12) : Math.ceil(scaled-0.5-1e-12))/factor;
+}
+function nine(index,nine){
+ const hi=roundTraditional(Number(index)/2,1);
+ const t=nine==="front"?front:back;
+ return hi*(t.slope/113)+(t.rating-t.par);
+}
+function holes(n,order){
+ n=Math.max(0,roundTraditional(n,0));
+ if(!n)return "none";
+ const a=[]; for(let i=0;i<n;i++) a.push(order[i%order.length] + (i>=order.length?"*":""));
+ return a.join(", ");
+}
+function optionSet(team,current,allowed){
+ const allow=new Set(allowed||all(team).map(p=>p.name));
+ return `<option value="">Select player</option>`+all(team).filter(p=>allow.has(p.name)||p.name===current)
+ .map(p=>`<option value="${p.name}" ${p.name===current?"selected":""}>${p.name} (${fmtH(p.h)})</option>`).join("");
+}
+function resultButtons(group,i,value,pts=1){
+ const label=group==="m4" ? ["MacDonald","Tie","Walker"] : (pts===2?["MacDonald +2","Tie +1/+1","Walker +2"]:["MacDonald","Tie","Walker"]);
+ return `<div class="resultBtns" data-rgroup="${group}" data-ri="${i}">
+  <button class="resultBtn ${value==="mac"?"active":""}" data-result="mac">${label[0]}</button>
+  <button class="resultBtn ${value==="tie"?"active":""}" data-result="tie">${label[1]}</button>
+  <button class="resultBtn ${value==="wal"?"active":""}" data-result="wal">${label[2]}</button>
+ </div>`;
+}
+function validAllowed(group,i,team,slot){
+ const row=state[group][i];
+ const slots=team==="mac"?["mac1","mac2"]:["wal1","wal2"];
+ const other=slot===slots[0]?slots[1]:slots[0];
+ const current=row[slot], partner=row[other];
+ const used=new Set();
+ state[group].forEach((r,j)=>{ if(j!==i) slots.forEach(s=>{if(r[s])used.add(r[s])}) });
+ return all(team).map(p=>p.name).filter(n=>(!used.has(n)||n===current) && (n!==partner||n===current));
+}
+function renderPairs(group,target){
+ const cards=state[group].map((r,i)=>{
+  const calc=group==="m1"?calcM1(r):calcM2(r);
+  return `<div class="matchCard">
+   <div class="matchTop">
+    <div class="no">${i+1}</div>
+    <div class="teamPicker">
+      <div class="teamPickerLabel">Team MacDonald</div>
+      <div class="pair">
+       <select data-group="${group}" data-i="${i}" data-slot="mac1">${optionSet("mac",r.mac1,validAllowed(group,i,"mac","mac1"))}</select>
+       <select data-group="${group}" data-i="${i}" data-slot="mac2">${optionSet("mac",r.mac2,validAllowed(group,i,"mac","mac2"))}</select>
+      </div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="teamPicker">
+      <div class="teamPickerLabel">Team Walker</div>
+      <div class="pair">
+       <select data-group="${group}" data-i="${i}" data-slot="wal1">${optionSet("wal",r.wal1,validAllowed(group,i,"wal","wal1"))}</select>
+       <select data-group="${group}" data-i="${i}" data-slot="wal2">${optionSet("wal",r.wal2,validAllowed(group,i,"wal","wal2"))}</select>
+      </div>
+    </div>
+   </div>
+   <div class="matchFooter">
+    <div class="calc">${calc}</div>
+    ${resultButtons(group,i,r.result)}
+   </div>
+  </div>`;
+ }).join("");
+ $(target).innerHTML=cards;
+}
+function m1Handicap(r){
+ if(!(r.mac1&&r.mac2&&r.wal1&&r.wal2)) return null;
+ const teamAllowance=(a,b)=>{
+  const ch=[nine(state.hcp[a],"front"),nine(state.hcp[b],"front")].sort((x,y)=>x-y);
+  // USGA Appendix C: 2-player scramble = 35% low + 15% high,
+  // using UNROUNDED Course Handicaps.
+  return .35*ch[0]+.15*ch[1];
+ };
+ const macRaw=teamAllowance(r.mac1,r.mac2);
+ const walRaw=teamAllowance(r.wal1,r.wal2);
+ // USGA LG_R7j: in match-play formats where the lowest side plays from scratch,
+ // apply the allowance to the UNROUNDED difference and round once at the end.
+ // USGA does not publish a separate worked example for 2v2 scramble match play,
+ // so this is the Impact Cup Terms-of-Competition implementation of that principle.
+ const diffRaw=macRaw-walRaw;
+ const strokes=roundTraditional(Math.abs(diffRaw),0);
+ return {macRaw,walRaw,diffRaw,strokes,team:strokes?(diffRaw>0?"mac":"wal"):""};
+}
+function calcM1(r){
+ const x=m1Handicap(r);
+ if(!x) return "Select all four players to calculate strokes.";
+ if(!x.strokes)return "No strokes — match plays even.";
+ const team=x.team==="mac"?"Team MacDonald":"Team Walker";
+ return `<strong>${team} gets ${x.strokes} stroke${x.strokes===1?"":"s"}</strong> · Hole${x.strokes===1?"":"s"} ${holes(x.strokes,frontOrder)}`;
+}
+function m2Handicap(r){
+ if(!(r.mac1&&r.mac2&&r.wal1&&r.wal2)) return null;
+ const entries=[
+  {team:"mac",n:r.mac1,h:nine(state.hcp[r.mac1],"back")},{team:"mac",n:r.mac2,h:nine(state.hcp[r.mac2],"back")},
+  {team:"wal",n:r.wal1,h:nine(state.hcp[r.wal1],"back")},{team:"wal",n:r.wal2,h:nine(state.hcp[r.wal2],"back")}
+ ];
+ // USGA/WHS Four-Ball Match Play: lowest UNROUNDED CH plays from scratch;
+ // apply 90% to each other player's UNROUNDED difference, then round each result.
+ const low=Math.min(...entries.map(x=>x.h));
+ entries.forEach(x=>x.s=roundTraditional((x.h-low)*.90,0));
+ return {entries,low};
+}
+function calcM2(r){
+ const x=m2Handicap(r);
+ if(!x) return "Select all four players to calculate strokes.";
+ return x.entries.map(e=>`<strong>${e.n}</strong>: ${e.s?`${e.s} (${holes(e.s,backOrder)})`:"scratch"}`).join(" · ");
+}
+function m3Handicap(r){
+ if(!(r.mac&&r.wal)) return null;
+ const macCH=nine(state.hcp[r.mac],"front");
+ const walCH=nine(state.hcp[r.wal],"front");
+ // USGA Appendix C: Individual Match Play = 100%.
+ // USGA LG_R7j: where the lowest player plays from scratch, apply the allowance
+ // to the UNROUNDED difference, then round once to determine the relative Playing Handicap.
+ const diffRaw=macCH-walCH;
+ const full=roundTraditional(Math.abs(diffRaw),0);
+ const playedSet=new Set([1,2,3,4,5,6]);
+ const allocated=[];
+ // Impact Cup Committee Rule for the shortened 6-hole segment:
+ // calculate the official 9-hole match-play difference, allocate it using the
+ // published Front-9 stroke-index order, and only use strokes landing on Holes 1-6.
+ for(let i=0;i<full;i++){
+  const h=frontOrder[i%frontOrder.length];
+  if(playedSet.has(h)) allocated.push(h+(i>=frontOrder.length?"*":""));
+ }
+ return {macCH,walCH,diffRaw,full,allocated,recv:full?(diffRaw>0?r.mac:r.wal):""};
+}
+function calcM3(r){
+ const x=m3Handicap(r);
+ if(!x)return "Select both players to calculate strokes.";
+ if(!x.allocated.length)return `No strokes fall on Holes 1–6.`;
+ const s=x.allocated.length;
+ return `<strong>${x.recv} gets ${s} stroke${s===1?"":"s"} in this 6-hole match</strong> · Hole${s===1?"":"s"} ${x.allocated.join(", ")}`;
+}
+function singlesAllowed(i,team){
+ const current=state.m3[i][team];
+ const otherTeam=team==="mac"?"wal":"mac";
+ const opponent=state.m3[i][otherTeam];
+ const used=new Set(state.m3.map((r,j)=>j===i?"":r[team]).filter(Boolean));
+ let allowed=all(team).map(p=>p.name).filter(n=>!used.has(n)||n===current);
+ if(opponent){
+  const oppTop=player(otherTeam,opponent).idx<5;
+  allowed=allowed.filter(n=>(player(team,n).idx<5)===oppTop || n===current);
+ }
+ return allowed;
+}
+function renderSingles(){
+ $("#singlesGrid").innerHTML=state.m3.map((r,i)=>`<div class="matchCard">
+  <div class="matchTop">
+   <div class="no">${i+1}</div>
+   <div class="teamPicker singleSelect">
+    <div class="teamPickerLabel">Team MacDonald</div>
+    <select data-group="m3" data-i="${i}" data-slot="mac">${optionSet("mac",r.mac,singlesAllowed(i,"mac"))}</select>
+   </div>
+   <div class="vs">VS</div>
+   <div class="teamPicker singleSelect">
+    <div class="teamPickerLabel">Team Walker</div>
+    <select data-group="m3" data-i="${i}" data-slot="wal">${optionSet("wal",r.wal,singlesAllowed(i,"wal"))}</select>
+   </div>
+  </div>
+  <div class="matchFooter">
+   <div class="calc">${calcM3(r)}</div>
+   ${resultButtons("m3",i,r.result)}
+  </div>
+ </div>`).join("");
+}
+function calcFinal(){
+ return "Scratch - no handicap strokes. Impact Cup Committee Rule: USGA/WHS does not publish a handicap allowance for a 10-player side sharing one alternate-shot ball.";
+}
+function renderFinal(){
+ $("#finalCalc").innerHTML="Finale details will be announced on the course.";
+ const finalPointValues=[1,1,2];
+ $("#finalHoles").innerHTML=[0,1,2].map((_,i)=>`<div class="finalHole">
+  <strong>Finale ${i+1}</strong><span class="meta">Details announced on course</span>${resultButtons("m4",i,state.m4[i],finalPointValues[i])}
+ </div>`).join("");
+}
+function renderRoster(team,target){
+ $(target).innerHTML=all(team).map(p=>`<div class="player">
+  <div><strong>${p.name}</strong><small>Front CH ${nine(p.h,"front").toFixed(2)} · Back CH ${nine(p.h,"back").toFixed(2)}</small></div>
+  <input type="number" step=".1" data-hcp="${p.name}" value="${p.h}" aria-label="${p.name} Handicap Index">
+ </div>`).join("");
+}
+function pointsFor(result,pts){
+ if(result==="mac")return [pts,0];
+ if(result==="wal")return [0,pts];
+ if(result==="tie")return [pts/2,pts/2];
+ return [0,0];
+}
+function groupScore(group,pts){
+ let m=0,w=0,played=0;
+ const arr=group==="m4"?state.m4:state[group];
+ arr.forEach((x,i)=>{
+  const r=group==="m4"?x:x.result;
+  if(r){
+   played++;
+   const value=group==="m4"?[1,1,2][i]:pts;
+   const p=pointsFor(r,value);
+   m+=p[0];w+=p[1];
+  }
+ })
+ return {m,w,played};
+}
+function fmtScore(n){return Number.isInteger(n)?String(n):n.toFixed(1)}
+function updateScore(){
+ const a=groupScore("m1",1),b=groupScore("m2",1),c=groupScore("m3",1),d=groupScore("m4",1);
+ [["m1",a,5],["m2",b,5],["m3",c,10],["m4",d,3]].forEach(([g,s,total])=>{
+  $(`#${g}mac`).textContent=fmtScore(s.m); $(`#${g}wal`).textContent=fmtScore(s.w);
+  $(`#${g}played`).textContent=g==="m4"?`${s.played} / 3 holes`:`${s.played} / ${total}`;
+ });
+ const mt=a.m+b.m+c.m+d.m, wt=a.w+b.w+c.w+d.w;
+ $("#macTotal").textContent=fmtScore(mt); $("#walTotal").textContent=fmtScore(wt);
+ const remaining=24-mt-wt;
+ $("#remainingText").textContent=`${fmtScore(remaining)} point${remaining===1?"":"s"} remaining`;
+ const needM=Math.max(0,12-mt), needW=Math.max(0,12.5-wt);
+ let lead;
+ if(mt>=12)lead=`<strong>Team MacDonald retains the Impact Cup.</strong>`;
+ else if(wt>=12.5)lead=`<strong>Team Walker wins the Impact Cup.</strong>`;
+ else if(mt===wt)lead=`<strong>Tied ${fmtScore(mt)}–${fmtScore(wt)}.</strong> MacDonald needs ${fmtScore(needM)} to retain · Walker needs ${fmtScore(needW)} to win.`;
+ else {
+  const leader=mt>wt?"MacDonald":"Walker", diff=Math.abs(mt-wt);
+  lead=`<strong>Team ${leader} leads by ${fmtScore(diff)}.</strong> MacDonald needs ${fmtScore(needM)} · Walker needs ${fmtScore(needW)}.`;
+ }
+ $("#leadText").innerHTML=lead;
+}
+
+function membersOfMatch(row){
+  return [row.mac1,row.mac2,row.wal1,row.wal2].filter(Boolean);
+}
+function findM1GroupByPlayer(order){
+  const map={};
+  order.forEach((m1Index,pos)=>{
+    membersOfMatch(state.m1[m1Index]).forEach(n=>{map[n]=pos});
+  });
+  return map;
+}
+function optimizerCost(order){
+  const pos=findM1GroupByPlayer(order);
+  let maxLate=0, totalLate=0, spreadTotal=0, worstSpread=0, crossDetails=[];
+  state.m2.forEach((r,i)=>{
+    const players=membersOfMatch(r);
+    if(players.length<4) return;
+    const positions=players.map(n=>pos[n]).filter(v=>v!==undefined);
+    if(positions.length<4) return;
+    const earliest=Math.min(...positions), ready=Math.max(...positions);
+    const spread=ready-earliest;
+    // Match 2 keeps its displayed order: index 0 goes first, index 4 goes last.
+    // A player coming from a later Match 1 slot should never be required by an
+    // earlier Match 2 slot if a safer Match 1 ordering exists.
+    const late=Math.max(0,ready-i);
+    maxLate=Math.max(maxLate,late);
+    totalLate+=late;
+    spreadTotal+=spread;
+    worstSpread=Math.max(worstSpread,spread);
+    crossDetails.push({i,earliest,ready,spread,late,positions});
+  });
+  return {maxLate,totalLate,spreadTotal,worst:worstSpread,crossDetails};
+}
+function betterOptimizerCost(a,b){
+  if(!b) return true;
+  if(a.maxLate!==b.maxLate) return a.maxLate<b.maxLate;
+  if(a.totalLate!==b.totalLate) return a.totalLate<b.totalLate;
+  if(a.spreadTotal!==b.spreadTotal) return a.spreadTotal<b.spreadTotal;
+  return a.worst<b.worst;
+}
+function bestTeeOrder(){
+  // Captains keep every matchup. Match 2 order stays exactly as entered.
+  // We test all 5! = 120 Match 1 tee orders and choose the safest transition.
+  const base=[0,1,2,3,4];
+  let best=base.slice(), bestCost=null;
+  for(const order of permute5(base)){
+    const c=optimizerCost(order);
+    if(betterOptimizerCost(c,bestCost)){
+      best=order.slice(); bestCost=c;
+    }
+  }
+  return {order:best,cost:bestCost};
+}
+function* permute5(arr){
+  function* rec(a,l){
+    if(l===a.length-1){yield a.slice(); return;}
+    for(let i=l;i<a.length;i++){
+      [a[l],a[i]]=[a[i],a[l]];
+      yield* rec(a,l+1);
+      [a[l],a[i]]=[a[i],a[l]];
+    }
+  }
+  yield* rec(arr.slice(),0);
+}
+function describeM1(index){
+  const r=state.m1[index];
+  const left=(r.mac1&&r.mac2)?`${r.mac1} / ${r.mac2}`:"Team MacDonald pair TBD";
+  const right=(r.wal1&&r.wal2)?`${r.wal1} / ${r.wal2}`:"Team Walker pair TBD";
+  return `${left} vs ${right}`;
+}
+function renderOptimizer(){
+  const grid=$("#optimizerGrid"), summary=$("#optimizerSummary");
+  if(!grid||!summary) return;
+  const order=Array.isArray(state.teeOrder)&&state.teeOrder.length===5?state.teeOrder:[0,1,2,3,4];
+  grid.innerHTML=order.map((m1Index,pos)=>`
+    <div class="optimizerSlot">
+      <div class="optimizerTime">${teeTimes[pos]}</div>
+      <div class="optimizerMatch"><strong>Match ${m1Index+1}</strong><br>${describeM1(m1Index)}</div>
+    </div>`).join("");
+
+  const completeM1=state.m1.every(r=>membersOfMatch(r).length===4);
+  const completeM2=state.m2.every(r=>membersOfMatch(r).length===4);
+  if(!(completeM1&&completeM2)){
+    summary.className="optimizerNote";
+    summary.textContent="Complete all Match 1 and Match 2 pairings to evaluate re-pairing flow.";
+    return;
+  }
+  const c=optimizerCost(order);
+  const risky=c.crossDetails.filter(x=>x.late>0);
+  let cls="optimizerGood", msg="Safe re-pairing order: no Match 2 group is scheduled before its latest Match 1 player is ready.";
+  if(c.maxLate===1){
+    cls="optimizerCaution";
+    msg=`Best available order still has a one-slot turnaround conflict in Match 2 ${risky.map(x=>x.i+1).join(", ")}. Consider changing the Match 2 order or pairings if you want zero risk.`;
+  }
+  if(c.maxLate>=2){
+    cls="optimizerBad";
+    msg=`Re-pairing risk remains: Match 2 ${risky.map(x=>x.i+1).join(", ")} requires player(s) from later Match 1 groups. Consider changing Match 2 order or pairings.`;
+  }
+  summary.className=`optimizerNote ${cls}`;
+  summary.textContent=msg;
+}
+function optimizeTeeOrder(){
+  const completeM1=state.m1.every(r=>membersOfMatch(r).length===4);
+  const completeM2=state.m2.every(r=>membersOfMatch(r).length===4);
+  if(!(completeM1&&completeM2)){
+    alert("Complete all Match 1 and Match 2 pairings first.");
+    return;
+  }
+  const best=bestTeeOrder();
+  state.teeOrder=best.order;
+  commitState();
+  renderOptimizer();
+  renderPresentation();
+}
+
+function render(){
+ renderPairs("m1","#match1Grid"); renderPairs("m2","#match2Grid"); renderSingles(); renderFinal();
+ renderRoster("mac","#macRoster"); renderRoster("wal","#walRoster"); updateScore();
+ renderOptimizer();
+ if($("#pMatch1")) renderPresentation();
+}
+function save(){
+ commitState();
+ const b=$("#saveBtn"),old=b.textContent;b.textContent="Saved";setTimeout(()=>b.textContent=old,900);
+}
+const API_STATE="/api/state";
+const POLL_MS_ADMIN=2500;
+const POLL_MS_PRESENT=1500;
+let serverVersion=0;
+let suppressRemote=false;
+let putTimer=null;
+let pollTimer=null;
+function getScorerPin(){return sessionStorage.getItem("impact-cup-scorer-pin")||"";}
+function setScorerPin(pin){sessionStorage.setItem("impact-cup-scorer-pin",pin||"");}
+function setSyncLabel(text,cls){const el=$("#syncStatus");if(!el)return;el.textContent=text;el.className=cls||"";}
+function commitState(){localStorage.setItem(STORAGE,JSON.stringify(state));broadcast();scheduleServerPut();}
+function scheduleServerPut(){
+ if(suppressRemote||document.body.classList.contains("presentation-mode"))return;
+ clearTimeout(putTimer);
+ putTimer=setTimeout(pushStateToServer,400);
+}
+function ensureScorerPin(){
+ if(getScorerPin())return true;
+ if(document.body.classList.contains("presentation-mode"))return false;
+ const pin=prompt("Enter scorer PIN (once per browser session):","");
+ if(pin===null)return false;
+ setScorerPin(pin.trim());
+ return !!getScorerPin();
+}
+async function pushStateToServer(){
+ if(document.body.classList.contains("presentation-mode"))return;
+ if(!getScorerPin()&&!ensureScorerPin()){setSyncLabel("Sync: view only — PIN required to publish scores","syncWarn");return;}
+ const pin=getScorerPin();
+ setSyncLabel("Sync: saving…","syncWarn");
+ try{
+  const res=await fetch(API_STATE,{method:"PUT",headers:{"Content-Type":"application/json","Authorization":"Bearer "+pin},body:JSON.stringify({state,expectedVersion:serverVersion})});
+  if(res.status===401){setSyncLabel("Sync: invalid PIN","syncErr");return;}
+  if(res.status===409){
+   const data=await res.json();
+   serverVersion=data.currentVersion??serverVersion;
+   setSyncLabel("Sync: conflict — reload to merge","syncErr");
+   return;
+  }
+  if(!res.ok)throw new Error("bad status");
+  const data=await res.json();
+  serverVersion=data.version;
+  setSyncLabel("Sync: live","syncOk");
+ }catch(e){setSyncLabel("Sync: offline","syncWarn");}
+}
+function applyServerState(data){
+ if(!data||!data.state)return false;
+ suppressRemote=true;
+ try{
+  state=data.state;
+  if(!Array.isArray(state.teeOrder)||state.teeOrder.length!==5)state.teeOrder=[0,1,2,3,4];
+  localStorage.setItem(STORAGE,JSON.stringify(state));
+  serverVersion=data.version??serverVersion;
+  if(document.body.classList.contains("presentation-mode"))renderPresentation();
+  else{render();renderPresentation();}
+  return true;
+ }finally{suppressRemote=false;}
+}
+async function pullStateFromServer(){
+ try{
+  const res=await fetch(API_STATE,{cache:"no-store"});
+  if(!res.ok)throw new Error();
+  const data=await res.json();
+  if(typeof data.version==="number")serverVersion=data.version;
+  const fromHash=location.hash.startsWith("#state=");
+  if(data.state&&!fromHash){
+   if(JSON.stringify(state)!==JSON.stringify(data.state))applyServerState(data);
+   else if(document.body.classList.contains("presentation-mode"))renderPresentation();
+   if(!document.body.classList.contains("presentation-mode"))setSyncLabel("Sync: live","syncOk");
+  }else if(data.state&&fromHash){
+   setSyncLabel("Sync: hash snapshot loaded","syncWarn");
+  }else{
+   setSyncLabel(document.body.classList.contains("presentation-mode")?"Sync: live (waiting for scores)":(getScorerPin()?"Sync: ready (empty server)":"Sync: live (view only)"),"syncOk");
+  }
+ }catch(e){if(!document.body.classList.contains("presentation-mode"))setSyncLabel("Sync: offline","syncWarn");}
+}
+function pollIntervalMs(){return document.body.classList.contains("presentation-mode")?POLL_MS_PRESENT:POLL_MS_ADMIN;}
+function startPolling(){if(pollTimer)clearInterval(pollTimer);const tick=()=>{if(navigator.onLine)pullStateFromServer();};tick();pollTimer=setInterval(tick,pollIntervalMs());}
+async function initLiveSync(){await pullStateFromServer();startPolling();window.addEventListener("online",()=>pullStateFromServer());}
+function enterPresentationMode(hideSwitch){
+ document.body.classList.add("presentation-mode");
+ $("#presentationModeBtn").classList.add("active");
+ $("#adminModeBtn").classList.remove("active");
+ if(hideSwitch){const sw=document.querySelector(".viewSwitch");if(sw)sw.style.display="none";}
+ renderPresentation();
+ startPolling();
+}
+function load(){
+ try{
+  const h=location.hash.startsWith("#state=")?location.hash.slice(7):"";
+  const raw=h?decodeURIComponent(escape(atob(h))):localStorage.getItem(STORAGE);
+  if(raw){
+   const x=JSON.parse(raw);
+   if(x&&x.m1&&x.m2&&x.m3&&x.m4&&x.hcp) state=x;
+   if(!Array.isArray(state.teeOrder)||state.teeOrder.length!==5) state.teeOrder=[0,1,2,3,4];
+   // Roster migration: Keenan Huskey out; Mike Koper in at 17.0.
+   const replacePlayer=v=>v==="Keenan Huskey"?"Mike Koper":v;
+   for(const g of ["m1","m2"]){
+    state[g].forEach(r=>{ for(const s of ["mac1","mac2","wal1","wal2"]) r[s]=replacePlayer(r[s]); });
+   }
+   state.m3.forEach(r=>{r.mac=replacePlayer(r.mac);r.wal=replacePlayer(r.wal);});
+   delete state.hcp["Keenan Huskey"];
+   state.hcp["Mike Koper"]=17;
+   state.hcp["Joshua Delo"]=-1.7; // Handicap Index +1.7
+  }
+ }catch(e){}
+}
+document.addEventListener("change",e=>{
+ const el=e.target;
+ if(el.matches("[data-group]")){
+  const g=el.dataset.group,i=Number(el.dataset.i),slot=el.dataset.slot;
+  state[g][i][slot]=el.value;
+  render();
+ } else if(el.matches("[data-hcp]")){
+  state.hcp[el.dataset.hcp]=Number(el.value);
+  render();
+ }
+ commitState();
+});
+document.addEventListener("click",e=>{
+ const btn=e.target.closest("[data-result]");
+ if(btn){
+  const box=btn.closest("[data-rgroup]"),g=box.dataset.rgroup,i=Number(box.dataset.ri),r=btn.dataset.result;
+  if(g==="m4")state.m4[i]=state.m4[i]===r?"":r;
+  else state[g][i].result=state[g][i].result===r?"":r;
+  commitState(); render(); renderPresentation();
+ }
+});
+$("#saveBtn").addEventListener("click",save);
+$("#pinBtn").addEventListener("click",()=>{
+ const cur=getScorerPin();
+ const pin=prompt("Enter shared scorer PIN (stored for this browser session):",cur||"");
+ if(pin===null)return;
+ setScorerPin(pin.trim());
+ scheduleServerPut();
+});
+$("#optimizeBtn").addEventListener("click",optimizeTeeOrder);
+$("#printBtn").addEventListener("click",()=>window.print());
+$("#resetBtn").addEventListener("click",()=>{
+ if(confirm("Reset all pairings, results and handicaps to the starting tournament setup?")){
+  localStorage.removeItem(STORAGE); location.hash=""; location.reload();
+ }
+});
+$("#shareBtn").addEventListener("click",async()=>{
+ const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+ const url=location.origin+location.pathname+"#state="+encoded;
+ try{await navigator.clipboard.writeText(url);$("#shareBtn").textContent="Snapshot link copied";setTimeout(()=>$("#shareBtn").textContent="Copy share snapshot",1200)}
+ catch(e){prompt("Copy this snapshot link:",url)}
+});
+
+const teeTimes=["10:50 AM","11:00 AM","11:10 AM","11:20 AM","11:30 AM"];
+
+function pairNames(a,b){
+  if(!a&&!b) return `<span class="presentEmpty">Awaiting selection</span>`;
+  if(a&&b) return `${a}<br>${b}`;
+  return `${a||b}<br><span class="presentEmpty">Awaiting partner</span>`;
+}
+function resultLabel(r,pts=1){
+  if(!r) return ``;
+  if(r==="tie") return `<span class="scoretag">${pts===2?"1–1":"½–½"}</span>`;
+  const team=r==="mac"?"MacDonald":"Walker";
+  return `<span class="scoretag">${team} +${pts}</span>`;
+}
+function presentM1Calc(r){
+  return calcM1(r).replace("Team MacDonald","Team MacDonald");
+}
+function presentM2Calc(r){ return calcM2(r); }
+function presentM3Calc(r){ return calcM3(r); }
+
+function strokeTextM1(r){
+  const x=m1Handicap(r);
+  if(!x) return "Strokes pending";
+  if(!x.strokes) return "No strokes · plays even";
+  return `<strong>${x.team==="mac"?"Team MacDonald":"Team Walker"}: ${x.strokes} stroke${x.strokes===1?"":"s"}</strong> · Hole${x.strokes===1?"":"s"} ${holes(x.strokes,frontOrder)}`;
+}
+function playerStrokeLine(name,n,order){
+  return n?`${name}: ${n} (${holes(n,order)})`:`${name}: scratch`;
+}
+function strokeTextM2(r){
+  const x=m2Handicap(r);
+  if(!x) return "Strokes pending";
+  const mac=x.entries.filter(e=>e.team==="mac").map(e=>playerStrokeLine(e.n,e.s,backOrder)).join(" · ");
+  const wal=x.entries.filter(e=>e.team==="wal").map(e=>playerStrokeLine(e.n,e.s,backOrder)).join(" · ");
+  return `<span class="side"><strong>MacDonald</strong> — ${mac}</span><span class="side"><strong>Walker</strong> — ${wal}</span>`;
+}
+function strokeTextM3(r){
+  const x=m3Handicap(r);
+  if(!x) return "Strokes pending";
+  if(!x.allocated.length) return "No strokes on Holes 1–6";
+  return `<strong>${x.recv}: ${x.allocated.length} stroke${x.allocated.length===1?"":"s"}</strong> · Hole${x.allocated.length===1?"":"s"} ${x.allocated.join(", ")}`;
+}
+function renderPresentation(){
+  const a=groupScore("m1",1),b=groupScore("m2",1),c=groupScore("m3",1),d=groupScore("m4",1);
+  const mt=a.m+b.m+c.m+d.m, wt=a.w+b.w+c.w+d.w, remaining=24-mt-wt;
+  $("#pMacTotal").textContent=fmtScore(mt);
+  $("#pWalTotal").textContent=fmtScore(wt);
+  $("#pRemainingText").textContent=`${fmtScore(remaining)} point${remaining===1?"":"s"} remaining`;
+  const needM=Math.max(0,12-mt), needW=Math.max(0,12.5-wt);
+  let lead;
+  if(mt>=12) lead=`Team MacDonald retains the Impact Cup`;
+  else if(wt>=12.5) lead=`Team Walker wins the Impact Cup`;
+  else if(mt===wt) lead=`Tied ${fmtScore(mt)}–${fmtScore(wt)} · MacDonald needs ${fmtScore(needM)} to retain · Walker needs ${fmtScore(needW)} to win`;
+  else lead=`Team ${mt>wt?"MacDonald":"Walker"} leads ${fmtScore(Math.max(mt,wt))}–${fmtScore(Math.min(mt,wt))} · MacDonald needs ${fmtScore(needM)} · Walker needs ${fmtScore(needW)}`;
+  $("#pLeadText").textContent=lead;
+
+  $("#pMatch1").innerHTML=state.m1.map((r,i)=>`
+    <div class="presentMatch">
+      <div class="presentTee">Match ${i+1}</div>
+      <div class="presentPair">${pairNames(r.mac1,r.mac2)}<small>Team MacDonald</small></div>
+      <div class="presentVs">VS</div>
+      <div class="presentPair">${pairNames(r.wal1,r.wal2)}<small>Team Walker</small></div>
+      <div class="presentHandicap">${strokeTextM1(r)}</div>
+      <div class="presentResult">${resultLabel(r.result,1)}</div>
+    </div>`).join("");
+
+  $("#pMatch2").innerHTML=state.m2.map((r,i)=>`
+    <div class="presentMatch">
+      <div class="presentTee">Match ${i+1}</div>
+      <div class="presentPair">${pairNames(r.mac1,r.mac2)}<small>Team MacDonald</small></div>
+      <div class="presentVs">VS</div>
+      <div class="presentPair">${pairNames(r.wal1,r.wal2)}<small>Team Walker</small></div>
+      <div class="presentHandicap">${strokeTextM2(r)}</div>
+      <div class="presentResult">${resultLabel(r.result,1)}</div>
+    </div>`).join("");
+
+  $("#pMatch3").innerHTML=state.m3.map((r,i)=>`
+    <div class="presentMatch">
+      <div class="presentTee">Singles ${i+1}</div>
+      <div class="presentPair">${r.mac||`<span class="presentEmpty">Awaiting selection</span>`}<small>Team MacDonald</small></div>
+      <div class="presentVs">VS</div>
+      <div class="presentPair">${r.wal||`<span class="presentEmpty">Awaiting selection</span>`}<small>Team Walker</small></div>
+      <div class="presentHandicap">${strokeTextM3(r)}</div>
+      <div class="presentResult">${resultLabel(r.result,1)}</div>
+    </div>`).join("");
+
+  const finalPointValues=[1,1,2];
+  $("#pFinal").innerHTML=[0,1,2].map((_,i)=>`
+    <div class="presentMatch">
+      <div class="presentTee">Finale ${i+1}</div>
+      <div class="presentPair">Team MacDonald<small>Details announced on course</small></div>
+      <div class="presentVs">VS</div>
+      <div class="presentPair">Team Walker<small>Details announced on course</small></div>
+      <div class="presentResult">${state.m4[i]?`<span class="scoretag">${state.m4[i]==="mac"?"MacDonald":state.m4[i]==="wal"?"Walker":"Tie"}</span>`:""}</div>
+    </div>`).join("");
+}
+
+const bc = "BroadcastChannel" in window ? new BroadcastChannel("impact-cup-2026") : null;
+if(bc) bc.onmessage=()=>{ try{const raw=localStorage.getItem(STORAGE); if(raw){state=JSON.parse(raw); render(); renderPresentation();}}catch(e){} };
+
+function broadcast(){ if(bc) bc.postMessage("update"); }
+
+$("#adminModeBtn").addEventListener("click",()=>{
+  document.body.classList.remove("presentation-mode");
+  const sw=document.querySelector(".viewSwitch");if(sw)sw.style.display="";
+  $("#adminModeBtn").classList.add("active"); $("#presentationModeBtn").classList.remove("active");
+  startPolling();
+});
+$("#presentationModeBtn").addEventListener("click",()=>enterPresentationMode(false));
+
+load();render();
+renderPresentation();
+initLiveSync();
+if(new URLSearchParams(location.search).get("mode")==="presentation")enterPresentationMode(true);
+</script>
+</body>
+</html>
