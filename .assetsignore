@@ -6,6 +6,10 @@ package.json
 package-lock.json
 test/**
 .git/**
+.wrangler/**
+.dev.vars
+.dev.vars.example
 .cursor/**
 internal/**
 docs/**
+fixtures/**

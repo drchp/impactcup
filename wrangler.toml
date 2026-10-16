@@ -10,7 +10,7 @@ not_found_handling = "single-page-application"
 [[d1_databases]]
 binding = "DB"
 database_name = "impactcup"
-database_id = "00000000-0000-0000-0000-000000000001"
+database_id = "fbcc6872-3329-4c0c-b389-1ebd4ca158ae"
 migrations_dir = "migrations"
 
 [vars]
