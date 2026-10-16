@@ -1,0 +1,34 @@
+{
+  "state": {
+    "hcp": { "Player A": 10 },
+    "m1": [
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" }
+    ],
+    "m2": [
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" },
+      { "mac1": "", "mac2": "", "wal1": "", "wal2": "", "result": "" }
+    ],
+    "m3": [
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" },
+      { "mac": "", "wal": "", "result": "" }
+    ],
+    "m4": ["", "", ""],
+    "teeOrder": [0, 1, 2, 3, 4]
+  },
+  "expectedVersion": 0
+}
